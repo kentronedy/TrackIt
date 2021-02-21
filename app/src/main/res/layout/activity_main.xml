@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/enterWeight"
+        android:layout_width="102dp"
+        android:layout_height="49dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@color/colorPrimary"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="64dp"
+        android:text="Enter Daily Weight:"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/enterWeight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/submitWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_rounded"
+        android:text="Submit"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:onClick="submitWeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemTextColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+    <androidx.gridlayout.widget.GridLayout
+        android:layout_width="409dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="38dp"
+        android:background="@color/colorShaded"
+        android:paddingLeft="10dp"
+        android:paddingTop="50dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="50dp"
+        app:columnCount="4"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridHeader">
+
+        <Button
+            android:id="@+id/fourthLastDelete"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_rounded"
+            android:text="DELETE"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:onClick="deleteFourPressed"
+            app:layout_column="0"
+            app:layout_gravity="center"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/thirdLastDelete"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_rounded"
+            android:text="DELETE"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:onClick="deleteThreePressed"
+            app:layout_column="1"
+            app:layout_gravity="center"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/secondLastDelete"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_rounded"
+            android:text="DELETE"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:onClick="deleteTwoPressed"
+            app:layout_column="2"
+            app:layout_gravity="center"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/LastDelete"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_rounded"
+            android:text="DELETE"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:onClick="deleteOnePressed"
+            app:layout_column="3"
+            app:layout_gravity="center"
+            app:layout_row="0" />
+
+        <TextView
+            android:id="@+id/fourthLastDate"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="Date4"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/thirdLastDate"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="Date3"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/secondLastDate"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="Date2"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/lastDate"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="Date1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/fourthLastWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="Weight4"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            app:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/thirdLastWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="Weight3"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            app:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/secondLastWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="Weight2"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            app:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/lastWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="Weight1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            app:layout_gravity="center" />
+
+        <Button
+            android:id="@+id/fourthLastEdit"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_rounded"
+            android:text="EDIT"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:onClick="editFourPressed"
+            app:layout_column="0"
+            app:layout_gravity="center"
+            app:layout_row="3" />
+
+        <Button
+            android:id="@+id/thirdLastEdit"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_rounded"
+            android:text="EDIT"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:onClick="editThreePressed"
+            app:layout_column="1"
+            app:layout_gravity="center"
+            app:layout_row="3" />
+
+        <Button
+            android:id="@+id/secondLastEdit"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_rounded"
+            android:text="EDIT"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:onClick="editTwoPressed"
+            app:layout_column="2"
+            app:layout_gravity="center"
+            app:layout_row="3" />
+
+        <Button
+            android:id="@+id/lastEdit"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_rounded"
+            android:text="EDIT"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:onClick="editOnePressed"
+            app:layout_column="3"
+            app:layout_gravity="center"
+            app:layout_row="3" />
+
+    </androidx.gridlayout.widget.GridLayout>
+
+    <TextView
+        android:id="@+id/gridHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="Previous Weights"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
