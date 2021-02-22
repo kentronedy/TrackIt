@@ -18,6 +18,8 @@ public class WeightDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        //Create the tables
         db.execSQL("create Table Users(" +
                 "username TEXT primary key, " +
                 "password TEXT not NULL, " +
@@ -41,6 +43,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
         db.execSQL("drop Table if exists Weights");
     }
 
+    //create method for the users table
     public boolean createUserData(String username, String password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -54,12 +57,14 @@ public class WeightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    //read method for the users table, returns a cursor
     public Cursor readUserData(String username){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("Select * from Users where username = ?", new String[]{username});
         return cursor;
     }
 
+    //update method for the users table
     public boolean updateUserData(String username, float goal){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -78,6 +83,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
 
     }
 
+    //overloaded method for updating the users table
     public boolean updateUserData(String username, int permission){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -96,6 +102,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
 
     }
 
+    //delete method for the users table
     public boolean deleteUserData(String username){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("Select * from Users where username = ?", new String[]{username});
@@ -111,6 +118,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    //create method for the weights table
     public boolean createWeightData(Date date, float weight, String username){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String stringDate = format.format(date);
@@ -129,6 +137,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    //read method for the weights table
     public Cursor readWeightData(String username){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -136,6 +145,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //overloaded method to read data in the weights table
     public Cursor readWeightData(String stringDate, String username){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -143,6 +153,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //overloaded method to read data from the weights table
     public Cursor readWeightData(Date date, String username){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String stringDate = format.format(date);
@@ -152,6 +163,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //Update method for the weights table
     public boolean updateWeightData(String stringDate, float weight, String username){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -169,6 +181,7 @@ public class WeightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    //delete method for the weights table
     public boolean deleteWeightData(String date){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

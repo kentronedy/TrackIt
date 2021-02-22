@@ -1,33 +1,19 @@
 package com.aloydev.weighttracker;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
-import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.SparseArray;
-import android.util.SparseBooleanArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //initialize variables
         submitWeight = findViewById(R.id.submitWeight);
         lastDelete = findViewById(R.id.LastDelete);
         secondLastDelete = findViewById(R.id.secondLastDelete);
@@ -71,10 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
         username = getIntent().getStringExtra("username");
 
+        //Have the user login if this is the first time the app has started up
         if(username == null){
             login();
         }
 
+        //Set the onNavigationItemSelectedListener for the bottom navbar
         bottomNav = findViewById(R.id.bottomNavigationView);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -97,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Set the values of the grid
         showGrid();
 
 
@@ -120,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //The login function will start the Login activity
     public void login() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
@@ -130,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         float weight;
         Date todayDate = Calendar.getInstance().getTime();
 
+        //Ensure that the user has entered a valid floating point value
         try {
             weight = Float.parseFloat(enterWeight.getText().toString());
         } catch(NumberFormatException E) {
@@ -142,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        //check that the user has not submitted the weight for the day already
         Cursor cursor = weightDB.readWeightData(todayDate, username);
         if(cursor.getCount() == 0){
             weightDB.createWeightData(todayDate,weight,username);
@@ -173,8 +166,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //showGrid sets the text of the TextViews in the GridView
     public void showGrid() {
-        //implement functionality to show the dates and the weights
+        //show the dates and the weights or "no data" if there are not enough data entries
         Cursor cursor = weightDB.readWeightData(username);
         if(cursor.getCount() > 3) {
             cursor.moveToNext();
@@ -235,7 +229,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //onClick to edit the most recent data entry
     public void editOnePressed(View view) {
+        //Check that there is data to edit
         if(lastDate.getText().toString().equals("No Data")){
             Context context = getApplicationContext();
             CharSequence message = "Nothing to edit.";
@@ -244,13 +240,16 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        //Start the Edit activity
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("dateToEdit", lastDate.getText().toString());
         startActivity(intent);
     }
 
+    //onClick to edit the second most recent data entry
     public void editTwoPressed(View view) {
+        //Check that there is data to edit
         if(secondLastDate.getText().toString().equals("No Data")){
             Context context = getApplicationContext();
             CharSequence message = "Nothing to edit.";
@@ -259,13 +258,16 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        //Start the Edit activity
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("dateToEdit", secondLastDate.getText().toString());
         startActivity(intent);
     }
 
+    //onClick to edit the third most recent data entry
     public void editThreePressed(View view) {
+        //Check that there is data to edit
         if(thirdLastDate.getText().toString().equals("No Data")){
             Context context = getApplicationContext();
             CharSequence message = "Nothing to edit.";
@@ -274,13 +276,16 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        //Start the Edit activity
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("dateToEdit", thirdLastDate.getText().toString());
         startActivity(intent);
     }
 
+    //onClick to edit the fourth most recent data entry
     public void editFourPressed(View view) {
+        //Check that there is data to edit
         if(fourthLastDate.getText().toString().equals("No Data")){
             Context context = getApplicationContext();
             CharSequence message = "Nothing to edit.";
@@ -289,13 +294,16 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        //Start the Edit activity
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("dateToEdit", fourthLastDate.getText().toString());
         startActivity(intent);
     }
 
+    //onClick to delete the most recent data entry
     public void deleteOnePressed(View view) {
+        //Check that there is data to delete
         if(lastDate.getText().toString().equals("No Data")){
             Context context = getApplicationContext();
             CharSequence message = "Nothing to delete.";
@@ -304,13 +312,16 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        //Start the Delete activity
         Intent intent = new Intent(this, DeleteActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("dateToDelete", lastDate.getText().toString());
         startActivity(intent);
     }
 
+    //onClick to delete the second most recent data entry
     public void deleteTwoPressed(View view) {
+        //Check that there is data to delete
         if(secondLastDate.getText().toString().equals("No Data")){
             Context context = getApplicationContext();
             CharSequence message = "Nothing to delete.";
@@ -319,13 +330,16 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        //Start the Delete activity
         Intent intent = new Intent(this, DeleteActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("dateToDelete", secondLastDate.getText().toString());
         startActivity(intent);
     }
 
+    //onClick to delete the third most recent data entry
     public void deleteThreePressed(View view) {
+        //Check that there is data to delete
         if(thirdLastDate.getText().toString().equals("No Data")){
             Context context = getApplicationContext();
             CharSequence message = "Nothing to delete.";
@@ -334,13 +348,16 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        //Start the Delete activity
         Intent intent = new Intent(this, DeleteActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("dateToDelete", thirdLastDate.getText().toString());
         startActivity(intent);
     }
 
+    //onClick to delete the fourth most recent data entry
     public void deleteFourPressed(View view) {
+        //Check that there is data to delete
         if(fourthLastDate.getText().toString().equals("No Data")){
             Context context = getApplicationContext();
             CharSequence message = "Nothing to delete.";
@@ -349,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        //Start the Delete activity
         Intent intent = new Intent(this, DeleteActivity.class);
         intent.putExtra("username", username);
         intent.putExtra("dateToDelete", fourthLastDate.getText().toString());

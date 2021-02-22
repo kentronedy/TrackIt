@@ -10,11 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class GoalActivity extends AppCompatActivity {
@@ -31,6 +27,7 @@ public class GoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
 
+        //initialize variables
         submitGoal = findViewById(R.id.submitGoal);
         notifyMe = findViewById(R.id.notifyMe);
         enterGoal = findViewById(R.id.enterGoal);
@@ -38,6 +35,7 @@ public class GoalActivity extends AppCompatActivity {
 
         username = getIntent().getStringExtra("username");
 
+        //Set the onNavigationItemSelectedListener for the bottom navbar
         bottomNav = findViewById(R.id.bottomNavigationView);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -80,8 +78,10 @@ public class GoalActivity extends AppCompatActivity {
         });
     }
 
+    //onClick for the submit button to update the goal field in the users table in the database
     public void submitGoal(View view) {
 
+        //Check that the goal is a valid floating point number
         float weightGoal;
         try {
             weightGoal = Float.parseFloat(enterGoal.getText().toString());
@@ -95,6 +95,7 @@ public class GoalActivity extends AppCompatActivity {
             return;
         }
 
+        //Check that the entry is updated successfully
         boolean goalUpdated = weightDB.updateUserData(username, weightGoal);
         if(goalUpdated) {
             Context context = getApplicationContext();
@@ -111,6 +112,7 @@ public class GoalActivity extends AppCompatActivity {
         }
     }
 
+    //onClick for the notify me button to start the permission activity
     public void notifyMe(View view) {
         Intent intent = new Intent(this, PermissionActivity.class);
         intent.putExtra("username", username);

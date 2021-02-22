@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Initialize variables
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         signIn = findViewById(R.id.signIn);
@@ -34,12 +35,14 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //onClick for the sign in button checks the values against the ones stored in the database
     public void checkLoginCredentials(View view){
         String enteredUsername = username.getText().toString();
         String enteredPassword = password.getText().toString();
 
         Cursor cursor = weightDB.readUserData(enteredUsername);
 
+        //Check that the username exists
         if(cursor.getCount() == 0) {
             username.setText("");
             password.setText("");
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             toast.show();
         } else {
             cursor.moveToLast();
+            //Validate that the password is correct
             if(enteredPassword.equals(cursor.getString(1))){
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("username", enteredUsername);
@@ -68,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //onClick for the create account button, creates a new record in the users table in the database
     public void createNewAccount(View view){
         String enteredUsername = username.getText().toString();
         String enteredPassword = password.getText().toString();

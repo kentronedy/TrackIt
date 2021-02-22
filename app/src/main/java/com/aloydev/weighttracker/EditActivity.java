@@ -2,15 +2,12 @@ package com.aloydev.weighttracker;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditActivity extends AppCompatActivity {
@@ -25,6 +22,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
+        //Initialize variables
         submitNewWeight = findViewById(R.id.submitNewWeight);
         cancelButton = findViewById(R.id.cancelButton);
         enterNewWeight = findViewById(R.id.enterNewWeight);
@@ -32,6 +30,7 @@ public class EditActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
         dateToEdit = getIntent().getStringExtra("dateToEdit");
 
+        //Set the size of the popup window
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
@@ -43,8 +42,10 @@ public class EditActivity extends AppCompatActivity {
 
     }
 
+    //onClick for the submit button to change the weight entered for the given date
     public void setNewWeight(View view) {
 
+        //Validate the user input as a floating point number
         float weight;
         try {
             weight = Float.parseFloat(enterNewWeight.getText().toString());
@@ -58,6 +59,7 @@ public class EditActivity extends AppCompatActivity {
             return;
         }
 
+        //Check that the update worked
         boolean isUpdated = weightDB.updateWeightData(dateToEdit, weight, username);
         if (isUpdated) {
             Context context = getApplicationContext();
@@ -73,11 +75,13 @@ public class EditActivity extends AppCompatActivity {
             toast.show();
         }
 
+        //Return to the Main activity
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("username", username);
         startActivity(intent);
     }
 
+    //onClick for the cancel button to return to the Main activity with no changes
     public void cancelEdit(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("username", username);
