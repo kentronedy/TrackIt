@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button submitWeight, lastDelete, secondLastDelete, thirdLastDelete, fourthLastDelete, lastEdit, secondLastEdit, thirdLastEdit, fourthLastEdit;
+    private Button submitWeight, lastDelete, secondLastDelete, thirdLastDelete, fourthLastDelete, lastEdit, secondLastEdit, thirdLastEdit, fourthLastEdit, back, forward;
     private TextView lastDate, secondLastDate, thirdLastDate, fourthLastDate, lastWeight, secondLastWeight, thirdLastWeight, fourthLastWeight;
     private EditText enterWeight;
 
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private WeightDatabase weightDB;
 
     private String username = null;
+
+    private int gridDatabasePos, curPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
         secondLastWeight = findViewById(R.id.secondLastWeight);
         thirdLastWeight = findViewById(R.id.thirdLastWeight);
         fourthLastWeight = findViewById(R.id.fourthLastWeight);
+        back = findViewById(R.id.back);
+        forward = findViewById(R.id.forward);
+
+        gridDatabasePos = 0;
+        curPage = 1;
 
         weightDB = new WeightDatabase(this);
 
@@ -170,8 +178,46 @@ public class MainActivity extends AppCompatActivity {
     public void showGrid() {
         //show the dates and the weights or "no data" if there are not enough data entries
         Cursor cursor = weightDB.readWeightData(username);
-        if(cursor.getCount() > 3) {
-            cursor.moveToNext();
+
+        int numEntries = cursor.getCount();
+
+        int numPages = numEntries / 4;
+
+        int numRem = numEntries % 4;
+
+        if(numRem != 0){
+            numPages += 1;
+        }
+
+        int pageEntries = 0;
+
+        if(numEntries != 0) {
+            if(curPage < numPages){
+                pageEntries = 4;
+            } else {
+                if(numRem == 0){
+                    pageEntries = 4;
+                } else {
+                    pageEntries = numRem;
+                }
+            }
+        }
+
+        if(curPage == 1){
+            forward.setEnabled(false);
+        } else {
+            forward.setEnabled(true);
+        }
+
+        if(curPage == numPages){
+            back.setEnabled(false);
+        } else {
+            back.setEnabled(true);
+        }
+
+        cursor.moveToPosition(gridDatabasePos);
+
+        if(pageEntries == 4) {
             lastDate.setText(cursor.getString(1));
             lastWeight.setText(cursor.getString(2) + " lbs");
             cursor.moveToNext();
@@ -183,8 +229,7 @@ public class MainActivity extends AppCompatActivity {
             cursor.moveToNext();
             fourthLastDate.setText(cursor.getString(1));
             fourthLastWeight.setText(cursor.getString(2) + " lbs");
-        } else if (cursor.getCount() == 3) {
-            cursor.moveToNext();
+        } else if (pageEntries == 3) {
             lastDate.setText(cursor.getString(1));
             lastWeight.setText(cursor.getString(2) + " lbs");
             cursor.moveToNext();
@@ -195,8 +240,7 @@ public class MainActivity extends AppCompatActivity {
             thirdLastWeight.setText(cursor.getString(2) + " lbs");
             fourthLastDate.setText("No Data");
             fourthLastWeight.setText("No Data");
-        } else if (cursor.getCount() == 2) {
-            cursor.moveToNext();
+        } else if (pageEntries == 2) {
             lastDate.setText(cursor.getString(1));
             lastWeight.setText(cursor.getString(2) + " lbs");
             cursor.moveToNext();
@@ -206,8 +250,7 @@ public class MainActivity extends AppCompatActivity {
             thirdLastWeight.setText("No Data");
             fourthLastDate.setText("No Data");
             fourthLastWeight.setText("No Data");
-        } else if (cursor.getCount() == 1) {
-            cursor.moveToNext();
+        } else if (pageEntries == 1) {
             lastDate.setText(cursor.getString(1));
             lastWeight.setText(cursor.getString(2) + " lbs");
             secondLastDate.setText("No Data");
@@ -216,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
             thirdLastWeight.setText("No Data");
             fourthLastDate.setText("No Data");
             fourthLastWeight.setText("No Data");
-        } else if (cursor.getCount() == 0) {
+        } else if (pageEntries == 0) {
             lastDate.setText("No Data");
             lastWeight.setText("No Data");
             secondLastDate.setText("No Data");
@@ -371,6 +414,18 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("username", username);
         intent.putExtra("dateToDelete", fourthLastDate.getText().toString());
         startActivity(intent);
+    }
+
+    public void backPressed(View view){
+        curPage += 1;
+        gridDatabasePos += 4;
+        showGrid();
+    }
+
+    public void forwardPressed(View view){
+        curPage -= 1;
+        gridDatabasePos -= 4;
+        showGrid();
     }
 
 }
