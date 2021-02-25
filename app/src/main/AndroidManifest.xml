@@ -12,24 +12,33 @@
         <service
             android:name=".TrackerIntentService"
             android:exported="false"></service>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GoalActivity"></activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".GoalActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".LoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".DeleteActivity"
             android:theme="@style/Theme.Design.NoActionBar.CustomTheme"
-            ></activity>
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".EditActivity"
             android:theme="@style/Theme.Design.NoActionBar.CustomTheme"
-            ></activity>
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".PermissionActivity"
             android:theme="@style/Theme.Design.NoActionBar.CustomTheme"
-            ></activity>
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
