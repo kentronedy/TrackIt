@@ -10,11 +10,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class PermissionActivity extends AppCompatActivity {
 
     private Button yesButton, noButton;
     private String username;
-    private WeightDatabase weightDB;
+    private TrackItDataService trackItDataService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,7 @@ public class PermissionActivity extends AppCompatActivity {
         yesButton = findViewById(R.id.yesButton);
         noButton = findViewById(R.id.noButton);
         username = getIntent().getStringExtra("username");
-        weightDB = new WeightDatabase(this);
+        trackItDataService = new TrackItDataService(getApplicationContext());
 
         //Set the size of the popup window
         DisplayMetrics dm = new DisplayMetrics();
@@ -38,48 +41,64 @@ public class PermissionActivity extends AppCompatActivity {
     }
 
     //onClick for the yes button to change the value of the permission field of the users table in the database to 1, indicating permission
-    public void yesPressed(View view) {
-        boolean isUpdated = weightDB.updateUserData(username, 1);
-        if(isUpdated){
-            Context context = getApplicationContext();
-            CharSequence message = "Notifications Now Allowed";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
-        } else {
-            Context context = getApplicationContext();
-            CharSequence message = "No permission change made.";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
-        }
+    public void yesPressed(View view) throws JSONException {
 
-        //Return to the Goal activity
-        Intent intent = new Intent(this, GoalActivity.class);
-        intent.putExtra("username", username);
-        startActivity(intent);
+        trackItDataService.setPermission(username, 1, new TrackItDataService.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+                Context context = getApplicationContext();
+                CharSequence message1 = "Could not change permissions, try later.";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, message1, duration);
+                toast.show();
+            }
+
+            @Override
+            public void onResponse(JSONObject response) throws JSONException {
+                Context context = getApplicationContext();
+                CharSequence message1 = "Permission Allowed";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, message1, duration);
+                toast.show();
+
+                //Return to the Goal activity
+                Intent intent = new Intent(getApplicationContext(), GoalActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     //onClick for the no button to change the value of the permission field in the users table in the database to 0, indicating no permission
-    public void noPressed(View view) {
-        boolean isUpdated = weightDB.updateUserData(username, 0);
-        if(isUpdated){
-            Context context = getApplicationContext();
-            CharSequence message = "Notifications Not Allowed";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
-        } else {
-            Context context = getApplicationContext();
-            CharSequence message = "No permission change made.";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
-        }
-        //Return to the Goal activity
-        Intent intent = new Intent(this, GoalActivity.class);
-        intent.putExtra("username", username);
-        startActivity(intent);
+    public void noPressed(View view) throws JSONException {
+
+        trackItDataService.setPermission(username, 0, new TrackItDataService.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+                Context context = getApplicationContext();
+                CharSequence message1 = "Could not change permissions, try later.";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, message1, duration);
+                toast.show();
+            }
+
+            @Override
+            public void onResponse(JSONObject response) throws JSONException {
+                Context context = getApplicationContext();
+                CharSequence message1 = "Permission Declined";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, message1, duration);
+                toast.show();
+
+                //Return to the Goal activity
+                Intent intent = new Intent(getApplicationContext(), GoalActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+            }
+        });
+
     }
 
 }

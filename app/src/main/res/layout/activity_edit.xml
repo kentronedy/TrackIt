@@ -7,52 +7,101 @@
     android:background="@color/colorPrimary">
 
     <TextView
-        android:id="@+id/editInstructions"
+        android:id="@+id/newWeightText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Enter the new weight:"
+        android:layout_marginTop="74dp"
+        android:layout_marginBottom="15dp"
+        android:text="New Weight:"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/enterNewWeight"
+        app:layout_constraintEnd_toStartOf="@+id/newSleepText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/submitNewWeight"
+        android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/btn_rounded"
-        android:text="SUBMIT"
         android:onClick="setNewWeight"
-        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+        android:text="SUBMIT"
+        app:layout_constraintBottom_toTopOf="@+id/cancel"
+        app:layout_constraintEnd_toStartOf="@+id/delete"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterNewWeight" />
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="43dp"
         android:background="@drawable/btn_rounded"
-        android:text="CANCEL"
         android:onClick="cancelEdit"
+        android:text="CANCEL"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/submitNewWeight"
-        app:layout_constraintTop_toBottomOf="@+id/enterNewWeight" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit" />
 
     <EditText
         android:id="@+id/enterNewWeight"
         android:layout_width="102dp"
         android:layout_height="49dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/edit_text_border"
         android:ems="10"
         android:inputType="numberDecimal"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:background="@drawable/edit_text_border"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/edit"
+        app:layout_constraintEnd_toStartOf="@+id/enterNewSleep"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editInstructions" />
+        app:layout_constraintTop_toBottomOf="@+id/newWeightText" />
+
+    <TextView
+        android:id="@+id/newSleepText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="74dp"
+        android:layout_marginBottom="15dp"
+        android:text="New Sleep:"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/enterNewSleep"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newWeightText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/enterNewSleep"
+        android:layout_width="102dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/edit_text_border"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/enterNewWeight"
+        app:layout_constraintTop_toBottomOf="@+id/newSleepText" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/btn_rounded"
+        android:onClick="setNewSleep"
+        android:text="SUBMIT"
+        app:layout_constraintBottom_toTopOf="@+id/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edit"
+        app:layout_constraintTop_toBottomOf="@+id/enterNewSleep" />
 </androidx.constraintlayout.widget.ConstraintLayout>

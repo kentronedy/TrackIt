@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText username;
@@ -18,10 +21,13 @@ public class LoginActivity extends AppCompatActivity {
     private Button signIn;
     private Button createAccount;
 
-    private WeightDatabase weightDB;
+    private TrackItDataService trackItDataService;
+
+    private String checkResponse, checkUsername, enteredUsername, enteredPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -30,68 +36,73 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         signIn = findViewById(R.id.signIn);
         createAccount = findViewById(R.id.createAccount);
-
-        weightDB = new WeightDatabase(this);
+        trackItDataService = new TrackItDataService(getApplicationContext());
 
     }
 
     //onClick for the sign in button checks the values against the ones stored in the database
-    public void checkLoginCredentials(View view){
-        String enteredUsername = username.getText().toString();
-        String enteredPassword = password.getText().toString();
+    public void checkLoginCredentials(View view) throws JSONException {
+        enteredUsername = username.getText().toString();
+        enteredPassword = password.getText().toString();
 
-        Cursor cursor = weightDB.readUserData(enteredUsername);
 
-        //Check that the username exists
-        if(cursor.getCount() == 0) {
-            username.setText("");
-            password.setText("");
-            Context context = getApplicationContext();
-            CharSequence message = "Account does not exist, create account.";
-            int duration = Toast.LENGTH_LONG;
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
-        } else {
-            cursor.moveToLast();
-            //Validate that the password is correct
-            if(enteredPassword.equals(cursor.getString(1))){
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("username", enteredUsername);
-                startActivity(intent);
-            } else {
-                username.setText("");
-                password.setText("");
+
+        trackItDataService.loginUser(enteredUsername, enteredPassword, new TrackItDataService.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
                 Context context = getApplicationContext();
-                CharSequence message = "Incorrect Password";
-                int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(context, message, duration);
+                CharSequence message1 = "Could not log on, retry.";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, message1, duration);
                 toast.show();
             }
-        }
+
+            @Override
+            public void onResponse(JSONObject response) throws JSONException {
+                LoginActivity.this.checkResponse = response.getString("message");
+                if(LoginActivity.this.checkResponse.equals("logged in successfully")){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("username", LoginActivity.this.enteredUsername);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
 
 
     }
 
     //onClick for the create account button, creates a new record in the users table in the database
-    public void createNewAccount(View view){
-        String enteredUsername = username.getText().toString();
-        String enteredPassword = password.getText().toString();
+    public void createNewAccount(View view) throws JSONException {
+        enteredUsername = username.getText().toString();
+        enteredPassword = password.getText().toString();
 
-        boolean result = weightDB.createUserData(enteredUsername, enteredPassword);
 
-        if(result){
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("username", enteredUsername);
-            startActivity(intent);
-        }else{
-            username.setText("");
-            password.setText("");
+        trackItDataService.registerUser(enteredUsername, enteredPassword, new TrackItDataService.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+                Context context = getApplicationContext();
+                CharSequence message1 = "Could not register, retry.";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, message1, duration);
+                toast.show();
+            }
 
-            Context context = getApplicationContext();
-            CharSequence message = "Account already exists, sign in.";
-            int duration = Toast.LENGTH_LONG;
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
-        }
+            @Override
+            public void onResponse(JSONObject response) throws JSONException {
+                LoginActivity.this.checkUsername = response.getString("username");
+                if(LoginActivity.this.checkUsername.equals(LoginActivity.this.enteredUsername)){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("username", LoginActivity.this.enteredUsername);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+
+
+
     }
 }

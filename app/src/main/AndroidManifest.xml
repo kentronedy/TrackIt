@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aloydev.weighttracker">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,6 +16,7 @@
             android:exported="false"></service>
         <activity android:name=".MainActivity"
             android:configChanges="orientation"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +26,11 @@
         </activity>
         <activity android:name=".GoalActivity"
             android:configChanges="orientation"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".LoginActivity"
             android:configChanges="orientation"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".DeleteActivity"
             android:theme="@style/Theme.Design.NoActionBar.CustomTheme"
@@ -33,9 +38,14 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name=".EditActivity"
             android:theme="@style/Theme.Design.NoActionBar.CustomTheme"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".PermissionActivity"
+            android:theme="@style/Theme.Design.NoActionBar.CustomTheme"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".EditOrDeleteActivity"
             android:theme="@style/Theme.Design.NoActionBar.CustomTheme"
             android:configChanges="orientation"
             android:screenOrientation="portrait"></activity>

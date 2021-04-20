@@ -13,14 +13,18 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class GoalActivity extends AppCompatActivity {
 
     private Button submitGoal, notifyMe;
     private EditText enterGoal;
     private BottomNavigationView bottomNav;
-    private WeightDatabase weightDB;
 
     private String username;
+
+    private TrackItDataService trackItDataService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,7 @@ public class GoalActivity extends AppCompatActivity {
         submitGoal = findViewById(R.id.submitGoal);
         notifyMe = findViewById(R.id.notifyMe);
         enterGoal = findViewById(R.id.enterGoal);
-        weightDB = new WeightDatabase(this);
+        trackItDataService = new TrackItDataService(getApplicationContext());
 
         username = getIntent().getStringExtra("username");
 
@@ -79,7 +83,7 @@ public class GoalActivity extends AppCompatActivity {
     }
 
     //onClick for the submit button to update the goal field in the users table in the database
-    public void submitGoal(View view) {
+    public void submitGoal(View view) throws JSONException {
 
         //Check that the goal is a valid floating point number
         float weightGoal;
@@ -95,21 +99,30 @@ public class GoalActivity extends AppCompatActivity {
             return;
         }
 
-        //Check that the entry is updated successfully
-        boolean goalUpdated = weightDB.updateUserData(username, weightGoal);
-        if(goalUpdated) {
-            Context context = getApplicationContext();
-            CharSequence message = "Updated.";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
-        } else {
-            Context context = getApplicationContext();
-            CharSequence message = "Not Updated.";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
-        }
+
+        trackItDataService.setGoal(username, weightGoal, new TrackItDataService.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+                enterGoal.setText("");
+                Context context = getApplicationContext();
+                CharSequence message1 = "Could not update goal, try later.";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, message1, duration);
+                toast.show();
+            }
+
+            @Override
+            public void onResponse(JSONObject response) throws JSONException {
+                enterGoal.setText("");
+                Context context = getApplicationContext();
+                CharSequence message1 = "Goal Set";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, message1, duration);
+                toast.show();
+            }
+        });
+
+
     }
 
     //onClick for the notify me button to start the permission activity

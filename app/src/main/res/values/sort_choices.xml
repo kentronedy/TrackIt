@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_choices_array">
+        <item>Date-New</item>
+        <item>Date-Old</item>
+        <item>Weight-High</item>
+        <item>Weight-Low</item>
+        <item>Sleep-High</item>
+        <item>Sleep-Low</item>
+    </string-array>
+</resources>

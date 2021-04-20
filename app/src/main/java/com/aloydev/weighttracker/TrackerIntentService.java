@@ -7,34 +7,55 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
+import android.util.Log;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class TrackerIntentService extends IntentService {
 
-    private WeightDatabase weightDB;
+    private TrackItDataService trackItDataService;
+    private double weight;
+    private String username;
 
     public TrackerIntentService() {
         super("TrackerIntentService");
-        weightDB = new WeightDatabase(this);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         //Get the submitted weight and the username
-        String username = intent.getStringExtra("username");
-        float weight = intent.getFloatExtra("weight", 0);
+        username = intent.getStringExtra("username");
+        weight = intent.getDoubleExtra("weight", 0);
+
+        trackItDataService = new TrackItDataService(getApplicationContext());
 
         //Create notification channel
         createTrackerNotificationChannel();
+        
 
-        //check weight against the goal and notify if it matches
-        Cursor cursor = weightDB.readUserData(username);
-        cursor.moveToNext();
-        float goal = cursor.getFloat(2);
-        if(weight == goal) {
-            createTrackerNotification("You reached your goal! Congrats!");
+        try {
+            trackItDataService.getUserData(username, new TrackItDataService.VolleyResponseListener() {
+                @Override
+                public void onError(String message) {
+
+                }
+
+                @Override
+                public void onResponse(JSONObject response) throws JSONException {
+                    if(weight == Double.parseDouble(response.getString("goal"))) {
+                        createTrackerNotification("You reached your goal! Congrats!");
+                    }
+                }
+            });
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
         }
+
+
 
     }
 

@@ -5,7 +5,7 @@
         android:id="@+id/action_DailyWeight"
         android:enabled="true"
         android:icon="@drawable/ic_daily_weight"
-        android:title="Daily Weight"
+        android:title="Daily Entry"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_Goal"
@@ -13,4 +13,5 @@
         android:icon="@drawable/ic_goal"
         android:title="Goal"
         app:showAsAction="ifRoom" />
+    an
 </menu>
